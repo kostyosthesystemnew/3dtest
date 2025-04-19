@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PLACE1.RBXL - ROBLOX</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #2d2d2d;
+    }
+
+    .game-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background-color: #1e1e1e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .player {
+      width: 50px;
+      height: 50px;
+      background-color: #39a0ff;
+      border-radius: 10px;
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .player-face {
+      width: 30px;
+      height: 30px;
+      background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/96ae80a4-87a8-4b64-a7f0-9a6423f6017f/dh4e0u6-164ab541-4543-403f-ac4c-c42340ee2da7.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzk2YWU4MGE0LTg3YTgtNGI2NC1hN2YwLTlhNjQyM2Y2MDE3ZlwvZGg0ZTB1Ni0xNjRhYjU0MS00NTQzLTQwM2YtYWM0Yy1jNDIzNDBlZTJkYTcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.vATI5_PBvirM78SM7Of936oCd6tPUOgXAN4XSfWX3Qc');
+      background-size: cover;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game-container">
+    <div class="player" id="player">
+      <div class="player-face"></div>
+    </div>
+  </div>
+
+  <script>
+    const player = document.getElementById('player');
+    const playerFace = player.querySelector('.player-face');
+    let playerPosition = { x: 0, y: 0 };
+
+    function updatePosition() {
+      localStorage.setItem('playerPosition', JSON.stringify(playerPosition));
+    }
+
+    function syncPosition() {
+      const storedPosition = JSON.parse(localStorage.getItem('playerPosition'));
+      if (storedPosition) {
+        playerPosition = storedPosition;
+        player.style.left = playerPosition.x + 'px';
+        player.style.top = playerPosition.y + 'px';
+      }
+    }
+
+    document.addEventListener('keydown', function(event) {
+      const step = 10;
+      if (event.key === 'ArrowUp') {
+        playerPosition.y -= step;
+      } else if (event.key === 'ArrowDown') {
+        playerPosition.y += step;
+      } else if (event.key === 'ArrowLeft') {
+        playerPosition.x -= step;
+      } else if (event.key === 'ArrowRight') {
+        playerPosition.x += step;
+      }
+      updatePosition();
+      syncPosition();
+    });
+
+    window.addEventListener('load', syncPosition);
+
+    player.style.left = playerPosition.x + 'px';
+    player.style.top = playerPosition.y + 'px';
+  </script>
+
+</body>
+</html>
